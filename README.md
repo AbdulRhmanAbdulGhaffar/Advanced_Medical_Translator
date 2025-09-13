@@ -1,4 +1,4 @@
-# 🌐 Advanced Medical Device Translator
+# 🌐 Advanced Medical Translator
 
 <p align="center">
   <img src="assets/animated-banner.gif" alt="Project Banner" width="100%">
@@ -14,7 +14,7 @@
 ---
 
 ## 🚀 Overview
-**Advanced Medical Device Translator** is a modern, web-based tool designed to translate **medical and healthcare device data** from Excel/CSV files into Arabic with **high precision**.  
+**Advanced Medical Translator** is a modern, web-based tool designed to translate **medical and healthcare device data** from Excel/CSV files into Arabic with **high precision**.  
 Built with **Tailwind CSS** for a sleek UI, and powered by **Google Gemini API**, it delivers professional, context-aware translations and even extracts **model** and **size** information automatically.
 
 ---
@@ -39,7 +39,7 @@ Built with **Tailwind CSS** for a sleek UI, and powered by **Google Gemini API**
 
 ## 🖼️ Screenshot
 <p align="center">
-  <img src="assets/screenshot.png" alt="UI Screenshot" width="80%" style="border-radius:10px">
+  <img src="assets/screenshot.png" alt="UI Screenshot" width="70%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3);transition:transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
 </p>
 
 ---
