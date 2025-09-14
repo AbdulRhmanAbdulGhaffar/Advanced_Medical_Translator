@@ -1,8 +1,6 @@
 # 🌐 Advanced Medical Translator
 
-<p align="center">
-  <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="Advanced Medical Translator Screenshot" width="90%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3)">
-</p>
+
 
 [![Live Demo](https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png)](https://abdulrhmanabdulghaffar.github.io/DBM_System/)
 [![GitHub license](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
