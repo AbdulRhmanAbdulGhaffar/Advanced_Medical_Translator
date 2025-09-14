@@ -3,31 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مترجم الأجهزة الطبية المتقدم</title>
+    <title>مترجم ومحلل البيانات الطبية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
+        /* الخطوط */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        
+        /* الأنماط العامة للجسم والخلفية */
         body {
             font-family: 'Cairo', sans-serif;
-            background: #f0f4f8;
+            background: radial-gradient(circle at 10% 20%, #f7f8f9 0%, #f9fafb 100%);
             color: #1a202c;
             direction: rtl;
             text-align: right;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        .dark body {
+            background: radial-gradient(circle at 10% 20%, #1a202c 0%, #2d3748 100%);
+            color: #e2e8f0;
+        }
+
+        /* حاوية التطبيق الرئيسية */
         .container-bg {
             background: linear-gradient(145deg, #ffffff, #f0f4f8);
             border-radius: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
             animation: fadeIn 0.8s ease-in-out;
         }
+
+        .dark .container-bg {
+            background: linear-gradient(145deg, #2d3748, #1a202c);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* حركة الدخول */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* أنماط الأزرار */
         .btn {
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -38,6 +59,11 @@
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
         }
+        .dark .btn {
+            box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
+        }
+
+        /* أيقونة التحميل */
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-left-color: #fff;
@@ -50,22 +76,31 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* شريط التقدم */
         .progress-bar-container {
             height: 1rem;
             background-color: #e2e8f0;
             border-radius: 0.5rem;
             overflow: hidden;
         }
+        .dark .progress-bar-container {
+            background-color: #4a5568;
+        }
         .progress-bar {
             height: 100%;
             background-image: linear-gradient(to right, #3b82f6, #60a5fa);
             transition: width 0.3s ease;
         }
+
+        /* النص المتدرج */
         .text-gradient {
             background-image: linear-gradient(to right, #3b82f6, #60a5fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* بطاقات المحتوى */
         .card {
             background: #fff;
             padding: 1.5rem;
@@ -74,82 +109,305 @@
             transition: all 0.3s ease;
             border: 1px solid #e2e8f0;
         }
+        .dark .card {
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Dashboard Card */
+        #analyticsDashboard { animation: fadeIn 0.5s ease-in-out; }
+
+
+        /* حقول الإدخال */
         input, select, textarea {
             transition: all 0.3s ease;
             border: 1px solid #cbd5e0;
         }
+        .dark input, .dark select, .dark textarea {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            border-color: #4a5568;
+        }
         input:focus, select:focus, textarea:focus {
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        /* روابط التواصل الاجتماعي */
+        .social-links {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .social-links a {
+            color: #4a5568;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .dark .social-links a {
+            color: #cbd5e0;
+        }
+        .social-links a:hover {
+            color: #3b82f6;
+            transform: scale(1.1);
+        }
+
+        /* تحسينات الواجهة الأمامية */
+        .header-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-out;
+        }
+        .dark .header-section {
+            background: #2d3748;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تحسين منطقة رفع الملف */
+        .file-upload-area {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border: 2px dashed #cbd5e0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .dark .file-upload-area {
+            border-color: #4a5568;
+        }
+        .file-upload-area.dragover {
+             background-color: #f0f4f8;
+             border-color: #3b82f6;
+        }
+        .dark .file-upload-area.dragover {
+             background-color: #4a5568;
+        }
+
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
     </style>
 </head>
 <body class="p-6 md:p-12 bg-gray-100">
 
 <div class="max-w-4xl mx-auto py-8 px-6 md:py-12 md:px-10 container-bg">
-    <h1 class="text-4xl font-extrabold text-center mb-2 text-gray-800">مترجم الأجهزة الطبية المتقدم</h1>
-    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">أداة متقدمة لمعالجة وترجمة بياناتك الطبية بدقة وسرعة فائقة، مع تحكم كامل في إعدادات الترجمة.</p>
+    
+    <!-- قسم العنوان والوصف -->
+    <div class="flex justify-between items-center mb-8 header-section">
+        <div class="text-right flex-grow">
+            <h1 id="mainTitle" class="text-4xl font-extrabold text-gray-800 mb-2"></h1>
+            <p id="mainDescription" class="text-gray-600 max-w-2xl mx-auto"></p>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse">
+            <!-- زر تبديل اللغة -->
+            <button id="langToggleBtn" class="btn px-4 py-2 bg-blue-500 text-white font-bold text-sm">EN</button>
+            
+            <!-- زر تبديل الوضع (داكن/فاتح) -->
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+            <i id="darkModeIcon" class="fas fa-moon text-gray-600 text-2xl"></i>
+        </div>
+    </div>
 
+    <!-- ملاحظة هامة -->
+    <div id="notesContainer" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded-md" role="alert">
+        <h3 id="notesTitle" class="font-bold text-lg mb-2"></h3>
+        <ul class="list-disc list-inside space-y-1 text-sm">
+            <li><strong id="note1_span"></strong><span id="note1_text"></span></li>
+            <li><strong id="note2_span"></strong><span id="note2_text"></span></li>
+            <li><strong id="note3_span"></strong><span id="note3_text"></span></li>
+            <li><strong id="note4_span"></strong><span id="note4_text"></span></li>
+        </ul>
+        <a id="notesLink" href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server" target="_blank" class="text-yellow-800 underline mt-2 block text-sm"></a>
+    </div>
+
+    <!-- بطاقات تحميل الملف والإعدادات -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- File Upload Card -->
-        <div class="card">
-            <h2 class="text-xl font-bold mb-4 text-gray-800"><span class="text-gradient">1.</span> تحميل الملف</h2>
-            <p class="text-gray-500 mb-4">قم برفع ملف Excel أو CSV لبدء العملية.</p>
-            <input id="fileInput" type="file" accept=".xlsx, .xls, .csv" class="w-full text-gray-700 cursor-pointer p-3 border rounded-md">
+        <div id="uploadCard" class="card">
+            <h2 id="uploadTitle" class="text-xl font-bold mb-4 text-gray-800"></h2>
+            <p id="uploadDesc" class="text-gray-500 mb-4"></p>
+            <label for="fileInput" class="file-upload-area w-full">
+                <i class="fas fa-file-upload text-5xl text-gray-400 mb-2"></i>
+                <span id="uploadLabel" class="text-md font-semibold text-gray-600"></span>
+                <input id="fileInput" type="file" accept=".xlsx, .xls, .csv" class="hidden">
+            </label>
         </div>
 
         <!-- Translation Options Card -->
         <div id="optionsContainer" class="card hidden">
-            <h2 class="text-xl font-bold mb-4 text-gray-800"><span class="text-gradient">2.</span> إعدادات الترجمة</h2>
+            <h2 id="optionsTitle" class="text-xl font-bold mb-4 text-gray-800"></h2>
+
+            <div class="mb-4">
+                <label id="directionLabel" for="directionSelect" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                <select id="directionSelect" class="w-full rounded-md p-3 text-gray-700 focus:ring-2 focus:ring-blue-500">
+                    <option value="en-ar">English -> Arabic</option>
+                    <option value="ar-en">Arabic -> English</option>
+                </select>
+            </div>
             
             <div class="mb-4">
-                <label for="columnSelect" class="block text-md font-semibold text-gray-700 mb-2">اختر عمود الوصف الإنجليزي</label>
+                <label id="columnLabel" for="columnSelect" class="block text-md font-semibold text-gray-700 mb-2"></label>
                 <select id="columnSelect" class="w-full rounded-md p-3 text-gray-700 focus:ring-2 focus:ring-blue-500"></select>
             </div>
 
             <div class="mb-4">
-                <label for="filterInput" class="block text-md font-semibold text-gray-700 mb-2">تصفية حسب كلمة مفتاحية (اختياري)</label>
-                <input type="text" id="filterInput" class="w-full rounded-md p-3 text-gray-700" placeholder="مثال: translate only descriptions containing 'sterile'">
+                <label id="filterLabel" for="filterInput" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                <input type="text" id="filterInput" class="w-full rounded-md p-3 text-gray-700" placeholder="">
             </div>
 
             <div class="mb-4">
-                <label for="promptInput" class="block text-md font-semibold text-gray-700 mb-2">تعليمات ترجمة مخصصة (اختياري)</label>
-                <textarea id="promptInput" rows="3" class="w-full rounded-md p-3 text-gray-700" placeholder="مثال: ترجم الوصف بأسلوب تقني بحت مع التركيز على الدقة..."></textarea>
+                <label id="promptLabel" for="promptInput" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                <textarea id="promptInput" rows="3" class="w-full rounded-md p-3 text-gray-700" placeholder=""></textarea>
             </div>
 
-            <div>
-                <label for="batchSizeInput" class="block text-md font-semibold text-gray-700 mb-2">حجم الدفعة (للتحكم في السرعة)</label>
-                <input id="batchSizeInput" type="number" value="20" min="1" max="100" class="w-full rounded-md p-3 text-gray-700">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label id="batchLabel" for="batchSizeInput" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                    <input id="batchSizeInput" type="number" value="20" min="1" max="100" class="w-full rounded-md p-3 text-gray-700">
+                </div>
+                <div>
+                    <label id="delayLabel" for="delayInput" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                    <input id="delayInput" type="number" value="100" min="0" step="100" class="w-full rounded-md p-3 text-gray-700">
+                </div>
+            </div>
+             <div class="mt-4">
+                <label id="maxRowsLabel" for="maxRowsInput" class="block text-md font-semibold text-gray-700 mb-2"></label>
+                <input id="maxRowsInput" type="number" value="0" min="0" step="100" class="w-full rounded-md p-3 text-gray-700">
             </div>
         </div>
     </div>
     
-    <div class="flex justify-center items-center space-x-4 flex-row-reverse my-8">
-        <button id="translateBtn" class="btn bg-blue-600 text-white font-bold hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center space-x-2 flex-row-reverse disabled:opacity-50 disabled:cursor-not-allowed">
-            <span id="btnText">بدء المعالجة والترجمة</span>
+    <!-- أزرار المعالجة والتحميل -->
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse my-8">
+        <button id="translateBtn" class="btn bg-blue-600 text-white font-bold hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center space-x-2 flex-row-reverse disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto">
+            <span id="btnText"></span>
             <div id="spinner" class="spinner hidden"></div>
         </button>
-        <button id="downloadBtn" class="btn bg-green-500 text-white font-bold hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed hidden">
-            تحميل الملف المترجم
+         <button id="cancelBtn" class="btn bg-red-600 text-white font-bold hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 hidden w-full md:w-auto">
+            <i class="fas fa-times ml-2"></i>
+            <span id="cancelBtnText"></span>
+        </button>
+        <button id="downloadBtn" class="btn bg-green-500 text-white font-bold hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed hidden w-full md:w-auto">
+            <i class="fas fa-download ml-2"></i>
+            <span id="downloadBtnText"></span>
+        </button>
+    </div>
+    
+    <!-- زر بدء ملف جديد -->
+    <div class="text-center mt-4">
+        <button id="newFileBtn" class="btn bg-gray-400 text-white font-bold hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50 hidden">
+            <i class="fas fa-file-alt ml-2"></i>
+            <span id="newFileBtnText"></span>
         </button>
     </div>
 
+    <!-- حالة المعالجة وشريط التقدم -->
     <div id="statusContainer" class="mt-4 hidden">
         <p id="statusMessage" class="text-center p-4 rounded-lg text-sm transition-all duration-300"></p>
         <div class="progress-bar-container mt-2">
             <div id="progressBar" class="progress-bar rounded-md" style="width: 0%;"></div>
         </div>
     </div>
+    
+     <!-- NEW: Analytics Dashboard -->
+    <div id="analyticsDashboard" class="card mt-8 hidden">
+        <h2 id="analyticsTitle" class="text-2xl font-bold mb-4 text-gray-800"></h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                <p id="totalRowsTitle" class="text-sm font-bold text-gray-500 dark:text-gray-400"></p>
+                <p id="totalRowsCount" class="text-3xl font-extrabold text-blue-500"></p>
+            </div>
+            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                <p id="uniqueRowsTitle" class="text-sm font-bold text-gray-500 dark:text-gray-400"></p>
+                <p id="uniqueRowsCount" class="text-3xl font-extrabold text-green-500"></p>
+            </div>
+             <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                <p id="processedTimeTitle" class="text-sm font-bold text-gray-500 dark:text-gray-400"></p>
+                <p id="processedTime" class="text-3xl font-extrabold text-purple-500"></p>
+            </div>
+        </div>
+        <div class="mt-6">
+            <canvas id="usageTypeChart"></canvas>
+        </div>
+    </div>
+
+
+    <!-- قسم التواصل وحقوق الملكية -->
+    <div class="social-links border-t border-gray-300 pt-8 mt-8">
+        <div class="flex justify-center space-x-6 text-2xl mb-2 flex-row-reverse">
+            <a href="https://www.linkedin.com/in/AbdulRhmanAbdulGhaffar/" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/AbdulRhmanAbdulGhaffar" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:abdulrhman.abdulghaffar001@gmail.com" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+        <p class="text-center text-sm text-gray-500">© AbdulRhman AbdulGhaffar</p>
+    </div>
 </div>
 
 <script>
     const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.querySelector('.file-upload-area');
     const translateBtn = document.getElementById('translateBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
     const statusContainer = document.getElementById('statusContainer');
@@ -160,115 +418,204 @@
     const promptInput = document.getElementById('promptInput');
     const filterInput = document.getElementById('filterInput');
     const batchSizeInput = document.getElementById('batchSizeInput');
+    const delayInput = document.getElementById('delayInput');
+    const maxRowsInput = document.getElementById('maxRowsInput');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const directionSelect = document.getElementById('directionSelect');
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    const newFileBtn = document.getElementById('newFileBtn');
+    const analyticsDashboard = document.getElementById('analyticsDashboard');
 
     let originalHeaders = [];
     let originalRows = [];
-    let translationCache = {};
+    let currentLang = 'ar';
+    let processedData = [];
+    let isProcessingCancelled = false;
+    let chartInstance;
 
-    const apiKey = "";
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+    const translations = {
+        'ar': {
+            mainTitle: 'مترجم ومحلل البيانات الطبية',
+            mainDesc: 'أداة ذكية لتحليل وترجمة بياناتك الطبية بدقة وسرعة، مع استخلاص معلومات حيوية مثل الموديل، المقاس، المادة، ونوع الاستخدام. جرب الأداء الفائق والتحليل العميق.',
+            notesTitle: 'ملاحظات هامة حول الاستخدام',
+            note1_span: 'تشغيل التطبيق:',
+            note1_text: ' لضمان عمل الأداة بشكل صحيح، يجب تشغيلها عبر خادم ويب محلي (مثل Python SimpleHTTPServer) لتجنب قيود الأمان في المتصفح.',
+            note2_span: 'سرعة المعالجة:',
+            note2_text: ' تتم المعالجة بشكل غير متزامن لضمان عدم تجميد الواجهة الرسومية وتوفير تجربة سلسة.',
+            note3_span: 'دقة الترجمة والتحليل:',
+            note3_text: ' للحصول على أفضل النتائج، استخدم خيارات التصفية وأضف تعليمات مخصصة لنموذج الذكاء الاصطناعي.',
+            note4_span: 'حجم الملف:',
+            note4_text: ' الأداة قادرة على التعامل مع الملفات الكبيرة. استخدم خيارات "الحد الأقصى للصفوف" و"الفاصل الزمني" للتحكم الدقيق في عملية المعالجة.',
+            notesLink: 'تعلم المزيد عن الخوادم المحلية',
+            uploadTitle: '1. تحميل الملف',
+            uploadDesc: 'قم برفع ملف Excel أو CSV لبدء العملية.',
+            uploadLabel: 'انقر أو اسحب الملف هنا',
+            optionsTitle: '2. إعدادات الترجمة والتحليل',
+            directionLabel: 'اتجاه الترجمة',
+            columnLabel: 'اختر عمود الوصف',
+            filterLabel: 'تصفية حسب كلمة مفتاحية (اختياري)',
+            filterPlaceholder: 'مثال: sterile',
+            promptLabel: 'تعليمات مخصصة للذكاء الاصطناعي (اختياري)',
+            promptPlaceholder: 'مثال: ركز على المصطلحات الجراحية الدقيقة...',
+            batchLabel: 'حجم الدفعة',
+            delayLabel: 'الفاصل الزمني (ms)',
+            maxRowsLabel: 'الحد الأقصى للصفوف (0 للكل)',
+            translateBtnText: 'بدء المعالجة والترجمة',
+            downloadBtnText: 'تحميل الملف المعالج',
+            newFileBtnText: 'بدء ملف جديد',
+            cancelBtnText: 'إلغاء',
+            statusInfo: 'بدء المعالجة، يرجى الانتظار...',
+            statusSuccess: 'تمت المعالجة بنجاح! يمكنك الآن تحميل الملف.',
+            statusError: 'حدث خطأ في الاتصال بالـ API. يرجى التحقق من اتصالك والمحاولة مرة أخرى.',
+            statusCancelled: 'تم إلغاء العملية.',
+            statusFileEmpty: 'الملف فارغ.',
+            statusFileError: 'حدث خطأ أثناء قراءة الملف. يرجى التأكد من أنه ملف Excel أو CSV صالح.',
+            statusProcessing: 'جاري المعالجة... ({translatedCount} وصف فريد تمت معالجته)',
+            statusNoData: 'لا توجد بيانات للتحميل.',
+            fileSelected: 'تم اختيار الملف: {fileName}',
+            analyticsTitle: 'لوحة تحليل البيانات',
+            totalRowsTitle: 'إجمالي الصفوف',
+            uniqueRowsTitle: 'الأوصاف الفريدة',
+            processedTimeTitle: 'زمن المعالجة',
+            usageTypeChartTitle: 'توزيع نوع الاستخدام',
+            singleUse: 'استخدام مرة واحدة',
+            reusable: 'قابل لإعادة الاستخدام',
+            unknown: 'غير معروف',
+        },
+        'en': {
+            mainTitle: 'Medical Data Translator & Analyzer',
+            mainDesc: 'An intelligent tool to analyze and translate your medical data with high accuracy and speed, extracting vital information like model, size, material, and usage type. Experience superior performance and deep analysis.',
+            notesTitle: 'Important Usage Notes',
+            note1_span: 'Running the App:',
+            note1_text: ' To ensure the tool works correctly, it must be run via a local web server (e.g., Python SimpleHTTPServer) to bypass browser security restrictions.',
+            note2_span: 'Processing Speed:',
+            note2_text: ' Processing is handled asynchronously to ensure the UI remains smooth and responsive.',
+            note3_span: 'Translation & Analysis Accuracy:',
+            note3_text: ' For best results, use the filtering options and add custom instructions for the AI model.',
+            note4_span: 'File Size:',
+            note4_text: ' The tool can handle large files. Use the \'Max Rows\' and \'Delay\' options for precise control over the process.',
+            notesLink: 'Learn more about local servers',
+            uploadTitle: '1. Upload File',
+            uploadDesc: 'Upload an Excel or CSV file to begin the process.',
+            uploadLabel: 'Click or drag file here',
+            optionsTitle: '2. Translation & Analysis Settings',
+            directionLabel: 'Translation Direction',
+            columnLabel: 'Select Description Column',
+            filterLabel: 'Filter by Keyword (Optional)',
+            filterPlaceholder: 'e.g., sterile',
+            promptLabel: 'Custom AI Instructions (Optional)',
+            promptPlaceholder: 'e.g., Focus on precise surgical terminology...',
+            batchLabel: 'Batch Size',
+            delayLabel: 'Delay (ms)',
+            maxRowsLabel: 'Max Rows (0 for all)',
+            translateBtnText: 'Start Processing & Translation',
+            downloadBtnText: 'Download Processed File',
+            newFileBtnText: 'Start New File',
+            cancelBtnText: 'Cancel',
+            statusInfo: 'Starting processing. This may take some time.',
+            statusSuccess: 'Processing successful! You can now download the file.',
+            statusError: 'API Error. Please check your connection and try again.',
+            statusCancelled: 'Processing cancelled.',
+            statusFileEmpty: 'File is empty.',
+            statusFileError: 'An error occurred while reading the file. Please ensure it is a valid Excel or CSV file.',
+            statusProcessing: 'Processing... ({translatedCount} unique descriptions processed)',
+            statusNoData: 'No data to download.',
+            fileSelected: 'File selected: {fileName}',
+            analyticsTitle: 'Data Analysis Dashboard',
+            totalRowsTitle: 'Total Rows',
+            uniqueRowsTitle: 'Unique Descriptions',
+            processedTimeTitle: 'Processing Time',
+            usageTypeChartTitle: 'Usage Type Distribution',
+            singleUse: 'Single-Use',
+            reusable: 'Reusable',
+            unknown: 'Unknown',
+        }
+    };
 
     function showStatus(message, type = 'info') {
-        let bgColor = '';
-        let textColor = '';
-        if (type === 'info') {
-            bgColor = 'bg-blue-100';
-            textColor = 'text-blue-700';
-        } else if (type === 'success') {
-            bgColor = 'bg-green-100';
-            textColor = 'text-green-700';
-        } else if (type === 'error') {
-            bgColor = 'bg-red-100';
-            textColor = 'text-red-700';
+        const statusClasses = {
+            info: 'bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200',
+            success: 'bg-green-100 dark:bg-green-800 text-green-700 dark:text-green-200',
+            error: 'bg-red-100 dark:bg-red-800 text-red-700 dark:text-red-200',
+            warning: 'bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-200'
+        };
+        if (statusContainer) {
+            statusContainer.classList.remove('hidden');
+            statusMessage.className = `p-4 rounded-lg text-sm ${statusClasses[type] || statusClasses.info} transition-all duration-300 text-center`;
+            statusMessage.textContent = message;
         }
-        statusContainer.classList.remove('hidden');
-        statusMessage.className = `p-4 rounded-lg text-sm ${bgColor} ${textColor} transition-all duration-300 text-center`;
-        statusMessage.textContent = message;
     }
 
     function updateProgress(percentage, translatedCount) {
-        progressBar.style.width = `${percentage}%`;
-        statusMessage.textContent = `جاري المعالجة... (${translatedCount} صف تمت معالجته)`;
+        if (progressBar && statusMessage) {
+            progressBar.style.width = `${percentage}%`;
+            statusMessage.textContent = translations[currentLang].statusProcessing.replace('{translatedCount}', translatedCount);
+        }
     }
 
-    async function translateBatch(descriptions, userPrompt) {
-        if (descriptions.length === 0) {
-            return [];
-        }
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        setLanguage('ar');
+        // Initial state setup
+        optionsContainer.classList.add('hidden');
+        downloadBtn.classList.add('hidden');
+        newFileBtn.classList.add('hidden');
+        cancelBtn.classList.add('hidden');
+        analyticsDashboard.classList.add('hidden');
 
-        const systemPrompt = userPrompt || "You are an expert in translating medical and healthcare product descriptions. Your task is to professionally translate the provided descriptions from English to Arabic. The translations must be highly accurate, technical, and non-literal. Additionally, you must accurately extract the product model and size from each description. If a model or size is not found, leave the field empty.";
-        const userQuery = `Translate the following product descriptions and extract the model and size for each. The descriptions are: ${JSON.stringify(descriptions)}. Return a JSON array where each object has the format: {'original_description': 'Original description', 'arabic_translation': 'Arabic translation', 'model': 'Model number', 'size': 'Size'}.`;
+        // Attach all event listeners once the DOM is ready
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            setLanguage(currentLang);
+        });
 
-        const payload = {
-            contents: [{
-                parts: [{
-                    text: userQuery
-                }]
-            }],
-            generationConfig: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "ARRAY",
-                    items: {
-                        type: "OBJECT",
-                        properties: {
-                            "original_description": {
-                                "type": "STRING"
-                            },
-                            "arabic_translation": {
-                                "type": "STRING"
-                            },
-                            "model": {
-                                "type": "STRING"
-                            },
-                            "size": {
-                                "type": "STRING"
-                            }
-                        }
-                    }
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+            document.body.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false);
+        });
+        uploadArea.addEventListener('drop', e => handleFile(e.dataTransfer.files[0]), false);
+
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        translateBtn.addEventListener('click', handleTranslation);
+
+        cancelBtn.addEventListener('click', () => {
+            isProcessingCancelled = true;
+        });
+
+        downloadBtn.addEventListener('click', handleDownload);
+        
+        newFileBtn.addEventListener('click', () => location.reload());
+
+        darkModeToggle.addEventListener('change', () => {
+            document.documentElement.classList.toggle('dark');
+            document.body.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                if (darkModeIcon) {
+                    darkModeIcon.classList.remove('fa-moon');
+                    darkModeIcon.classList.add('fa-sun');
                 }
-            },
-            systemInstruction: {
-                parts: [{
-                    text: systemPrompt
-                }]
+            } else {
+                if (darkModeIcon) {
+                    darkModeIcon.classList.remove('fa-sun');
+                    darkModeIcon.classList.add('fa-moon');
+                }
             }
-        };
+        });
+    });
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                console.error("API Error:", error);
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-            return JSON.parse(jsonText);
-        } catch (error) {
-            console.error("خطأ في الاتصال بـ API:", error);
-            return descriptions.map(desc => ({
-                original_description: desc,
-                arabic_translation: 'خطأ في الترجمة',
-                model: '',
-                size: ''
-            }));
-        }
-    }
-
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) {
-            return;
-        }
+    function handleFile(file) {
+         if (!file) return;
+        
+        document.getElementById('uploadLabel').textContent = translations[currentLang].fileSelected.replace('{fileName}', file.name);
+        resetState(false, true);
 
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -280,133 +627,377 @@
                 const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
                 if (json.length === 0) {
-                    showStatus('الملف فارغ.', 'error');
+                    showStatus(translations[currentLang].statusFileEmpty, 'error');
                     return;
                 }
                 
                 originalHeaders = json[0];
                 originalRows = json.slice(1);
                 
-                columnSelect.innerHTML = '';
-                originalHeaders.forEach((header, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = header || `Column ${index + 1}`;
-                    columnSelect.appendChild(option);
-                });
+                if (columnSelect) {
+                    columnSelect.innerHTML = '';
+                    originalHeaders.forEach((header, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = header || `Column ${index + 1}`;
+                        columnSelect.appendChild(option);
+                    });
+                }
                 
-                optionsContainer.classList.remove('hidden');
-                showStatus('تم تحميل الملف بنجاح. يرجى اختيار عمود الترجمة وتعيين الإعدادات.', 'success');
-                downloadBtn.classList.add('hidden');
+                if (optionsContainer) optionsContainer.classList.remove('hidden');
+                if(statusContainer) statusContainer.classList.add('hidden');
+                if (downloadBtn) downloadBtn.classList.add('hidden');
             } catch (error) {
-                console.error("خطأ في قراءة الملف:", error);
-                showStatus('حدث خطأ أثناء قراءة الملف. يرجى التأكد من أنه ملف Excel أو CSV صالح.', 'error');
+                console.error("Error reading file:", error);
+                showStatus(translations[currentLang].statusFileError, 'error');
             }
         };
         reader.readAsArrayBuffer(file);
-    });
+    }
+    
+    async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
+        let delay = 1000;
+        for (let i = 0; i < maxRetries; i++) {
+            if (isProcessingCancelled) return null;
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    if (response.status === 429 || response.status >= 500) {
+                        throw new Error(`API Error with status ${response.status}`);
+                    }
+                    return null;
+                }
+                return await response.json();
+            } catch (error) {
+                if (i === maxRetries - 1) throw error;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+        }
+        return null;
+    }
 
-    translateBtn.addEventListener('click', async () => {
+    async function translateAndAnalyzeBatch(descriptions, userPrompt, direction) {
+        const apiKey = ""; // Leave this empty, the environment will handle it.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        if (descriptions.length === 0) return [];
+        const isEnToAr = direction === 'en-ar';
+        const targetLang = isEnToAr ? 'Arabic' : 'English';
+        const sourceLang = isEnToAr ? 'English' : 'Arabic';
+        const translationField = isEnToAr ? 'arabic_translation' : 'english_translation';
+
+        const systemPrompt = `You are a world-class expert in analyzing and translating medical and healthcare device descriptions. Your task is to process descriptions from ${sourceLang} to ${targetLang}. For each description, you must:
+1.  Provide a highly accurate, technical, and non-literal translation.
+2.  Extract the product 'model' number or code.
+3.  Extract the product 'size' (e.g., dimensions, gauge, volume).
+4.  Identify the primary 'material' of the device (e.g., Stainless Steel, Silicone, Polymer).
+5.  Determine the 'usage_type', specifying if it's 'Single-Use' or 'Reusable'.
+If any piece of information is not found, return an empty string for that field. Your response must be a valid JSON array of objects. ${userPrompt}`;
+
+        const userQuery = JSON.stringify(descriptions);
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "ARRAY",
+                    items: {
+                        type: "OBJECT",
+                        properties: {
+                            "original_description": { "type": "STRING" },
+                            [translationField]: { "type": "STRING" },
+                            "model": { "type": "STRING" },
+                            "size": { "type": "STRING" },
+                            "material": { "type": "STRING" },
+                            "usage_type": { "type": "STRING" }
+                        }
+                    }
+                }
+            },
+            systemInstruction: { parts: [{ text: systemPrompt }] }
+        };
+
+        try {
+            const result = await fetchWithExponentialBackoff(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!result) {
+                throw new Error("API call failed after retries or due to a client-side error.");
+            }
+
+            const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!jsonText) {
+                console.error("API Error: No text returned in the response.", result);
+                return null;
+            }
+
+            try {
+                return JSON.parse(jsonText);
+            } catch (parseError) {
+                console.error("API Error: Failed to parse JSON response. Raw text:", jsonText);
+                console.error("Parse Error details:", parseError);
+                return null; // Signal failure
+            }
+
+        } catch (error) {
+            console.error("API Call Error:", error);
+            return null;
+        }
+    }
+
+
+    async function handleTranslation() {
         if (originalRows.length === 0) {
-            showStatus('يرجى تحميل ملف أولاً.', 'info');
+            showStatus(translations[currentLang].statusNoData, 'info');
             return;
         }
 
-        translateBtn.disabled = true;
-        fileInput.disabled = true;
-        btnText.textContent = 'جاري المعالجة...';
-        spinner.classList.remove('hidden');
-        downloadBtn.classList.add('hidden');
-        statusContainer.classList.remove('hidden');
-        updateProgress(0, 0);
-        showStatus('بدء المعالجة. قد يستغرق الأمر بعض الوقت.', 'info');
-
+        resetForProcessing();
+        const startTime = performance.now();
+        
         const columnIndex = columnSelect.value;
         const userPrompt = promptInput.value;
         const filterKeyword = filterInput.value.toLowerCase();
         const batchSize = parseInt(batchSizeInput.value, 10);
-        
-        const newHeaders = [...originalHeaders, 'الترجمة العربية', 'الموديل', 'المقاس'];
-        const finalData = [newHeaders];
-        
-        const descriptionsToTranslate = [];
-        const originalToTranslatedMap = new Map();
+        const delay = parseInt(delayInput.value, 10) || 0;
+        const maxRows = parseInt(maxRowsInput.value, 10) || 0;
+        const direction = directionSelect.value;
 
-        // Collect unique descriptions to translate
-        originalRows.forEach(row => {
+        let rowsToProcess = maxRows > 0 ? originalRows.slice(0, maxRows) : originalRows;
+        
+        const uniqueDescriptions = new Set();
+        rowsToProcess.forEach(row => {
             const description = row[columnIndex] || '';
-            if (description && !originalToTranslatedMap.has(description) && (!filterKeyword || description.toLowerCase().includes(filterKeyword))) {
-                descriptionsToTranslate.push(description);
-                originalToTranslatedMap.set(description, null);
+            if (description && (!filterKeyword || description.toLowerCase().includes(filterKeyword))) {
+                uniqueDescriptions.add(description);
             }
         });
 
-        const totalToTranslate = descriptionsToTranslate.length;
-        let translatedCount = 0;
-        
-        for (let i = 0; i < totalToTranslate; i += batchSize) {
-            const batch = descriptionsToTranslate.slice(i, i + batchSize);
-            const translationResults = await translateBatch(batch, userPrompt);
-            
-            translationResults.forEach(result => {
-                originalToTranslatedMap.set(result.original_description, result);
-            });
+        const descriptionsToProcess = Array.from(uniqueDescriptions);
+        const processedResultsMap = new Map();
+        const totalToProcess = descriptionsToProcess.length;
+        let processedCount = 0;
 
-            translatedCount += batch.length;
-            const progress = (translatedCount / totalToTranslate) * 100;
-            updateProgress(progress > 100 ? 100 : progress, translatedCount);
+        for (let i = 0; i < totalToProcess; i += batchSize) {
+            if (isProcessingCancelled) break;
+
+            const batch = descriptionsToProcess.slice(i, i + batchSize);
+            const batchResults = await translateAndAnalyzeBatch(batch, userPrompt, direction);
+            
+            if (!batchResults) {
+                showStatus(translations[currentLang].statusError, 'error');
+                resetState(false);
+                return;
+            }
+            
+            batchResults.forEach(result => processedResultsMap.set(result.original_description, result));
+
+            processedCount += batch.length;
+            updateProgress((processedCount / totalToProcess) * 100, processedCount);
+            
+            if (delay > 0 && i + batchSize < totalToProcess) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
         }
 
-        // Populate final data using the cache
-        originalRows.forEach(row => {
+        if (isProcessingCancelled) {
+            showStatus(translations[currentLang].statusCancelled, 'warning');
+            resetState(false);
+            return;
+        }
+
+        const endTime = performance.now();
+        const processedTime = ((endTime - startTime) / 1000).toFixed(2) + 's';
+        
+        const isEnToAr = direction === 'en-ar';
+        const newHeaders = [...originalHeaders];
+        const analysisHeaders = isEnToAr 
+            ? ['الترجمة العربية', 'الموديل', 'المقاس', 'المادة', 'نوع الاستخدام']
+            : ['English Translation', 'Model', 'Size', 'Material', 'Usage Type'];
+        newHeaders.push(...analysisHeaders);
+        
+        const finalData = [newHeaders];
+        rowsToProcess.forEach(row => {
             const description = row[columnIndex] || '';
-            const translation = originalToTranslatedMap.get(description);
-            
+            const result = processedResultsMap.get(description);
             const newRow = [...row];
-            if (translation) {
-                newRow.push(translation.arabic_translation, translation.model, translation.size);
+            if (result) {
+                const translation = isEnToAr ? result.arabic_translation : result.english_translation;
+                newRow.push(translation || '', result.model || '', result.size || '', result.material || '', result.usage_type || '');
             } else {
-                newRow.push('لم يتم ترجمته', '', '');
+                newRow.push('', '', '', '', '');
             }
             finalData.push(newRow);
         });
         
         processedData = finalData;
-
-        showStatus('تمت المعالجة بنجاح! يمكنك الآن تحميل الملف.', 'success');
-        downloadBtn.classList.remove('hidden');
+        showStatus(translations[currentLang].statusSuccess, 'success');
+        displayAnalytics(processedData, processedResultsMap.size, processedTime);
         resetState(true);
-    });
+    }
 
-    downloadBtn.addEventListener('click', () => {
-        if (processedData.length > 1) { // Check if there's data besides headers
+    function handleDownload() {
+        if (processedData.length > 1) {
             const worksheet = XLSX.utils.aoa_to_sheet(processedData);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'البيانات المترجمة');
-            const fileName = 'بيانات_مترجمة.xlsx';
-            const workbook_output = XLSX.write(workbook, {
-                bookType: 'xlsx',
-                type: 'array'
-            });
-            saveAs(new Blob([workbook_output], {
-                type: 'application/octet-stream'
-            }), fileName);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Translated Data');
+            const fileName = currentLang === 'ar' ? 'بيانات_معالجة.xlsx' : 'Processed_Data.xlsx';
+            const workbook_output = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            saveAs(new Blob([workbook_output], { type: 'application/octet-stream' }), fileName);
         } else {
-            showStatus('لا توجد بيانات للتحميل.', 'info');
+            showStatus(translations[currentLang].statusNoData, 'info');
         }
-    });
+    }
 
-    function resetState(success = false) {
+
+    function resetForProcessing() {
+        isProcessingCancelled = false;
+        translateBtn.disabled = true;
+        fileInput.disabled = true;
+        cancelBtn.classList.remove('hidden');
+        spinner.classList.remove('hidden');
+        downloadBtn.classList.add('hidden');
+        newFileBtn.classList.add('hidden');
+        analyticsDashboard.classList.add('hidden');
+        statusContainer.classList.remove('hidden');
+        btnText.textContent = translations[currentLang].statusInfo;
+        updateProgress(0, 0);
+    }
+    
+    function displayAnalytics(data, uniqueCount, time) {
+        analyticsDashboard.classList.remove('hidden');
+        const t = translations[currentLang];
+        document.getElementById('analyticsTitle').textContent = t.analyticsTitle;
+        document.getElementById('totalRowsTitle').textContent = t.totalRowsTitle;
+        document.getElementById('uniqueRowsTitle').textContent = t.uniqueRowsTitle;
+        document.getElementById('processedTimeTitle').textContent = t.processedTimeTitle;
+        
+        document.getElementById('totalRowsCount').textContent = data.length - 1; // excluding header
+        document.getElementById('uniqueRowsCount').textContent = uniqueCount;
+        document.getElementById('processedTime').textContent = time;
+
+        const usageTypeIndex = data[0].length - 1;
+        const usageCounts = { [t.singleUse]: 0, [t.reusable]: 0, [t.unknown]: 0 };
+
+        for(let i = 1; i < data.length; i++) {
+            const usage = data[i][usageTypeIndex]?.toLowerCase() || '';
+            if (usage.includes('single')) {
+                usageCounts[t.singleUse]++;
+            } else if (usage.includes('reusable')) {
+                 usageCounts[t.reusable]++;
+            } else {
+                 usageCounts[t.unknown]++;
+            }
+        }
+        
+        const ctx = document.getElementById('usageTypeChart').getContext('2d');
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+        chartInstance = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(usageCounts),
+                datasets: [{
+                    label: t.usageTypeChartTitle,
+                    data: Object.values(usageCounts),
+                    backgroundColor: ['#3b82f6', '#10b981', '#a855f7'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: t.usageTypeChartTitle }
+                }
+            }
+        });
+    }
+
+    function resetState(success = false, isNewFile = false) {
         translateBtn.disabled = false;
         fileInput.disabled = false;
-        btnText.textContent = 'بدء المعالجة والترجمة';
+        btnText.textContent = translations[currentLang].translateBtnText;
         spinner.classList.add('hidden');
+        cancelBtn.classList.add('hidden');
         if (!success) {
             progressBar.style.width = '0%';
-            statusContainer.classList.add('hidden');
+            if (!isNewFile) statusContainer.classList.add('hidden');
+            analyticsDashboard.classList.add('hidden');
+        } else {
+             downloadBtn.classList.remove('hidden');
+             newFileBtn.classList.remove('hidden');
         }
+
+        if (isNewFile) {
+            optionsContainer.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+            newFileBtn.classList.add('hidden');
+            analyticsDashboard.classList.add('hidden');
+            if(fileInput.value) fileInput.value = "";
+        }
+    }
+    
+    function setLanguage(lang) {
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        const t = translations[lang];
+        
+        const elementsToUpdate = [
+            { id: 'mainTitle', text: t.mainTitle },
+            { id: 'mainDescription', text: t.mainDesc },
+            { id: 'notesTitle', text: t.notesTitle },
+            { id: 'notesLink', text: t.notesLink },
+            { id: 'uploadTitle', text: t.uploadTitle, hasSpan: true, spanNumber: 1 },
+            { id: 'uploadDesc', text: t.uploadDesc },
+            { id: 'uploadLabel', text: t.uploadLabel },
+            { id: 'optionsTitle', text: t.optionsTitle, hasSpan: true, spanNumber: 2 },
+            { id: 'directionLabel', text: t.directionLabel },
+            { id: 'columnLabel', text: t.columnLabel },
+            { id: 'filterLabel', text: t.filterLabel },
+            { id: 'promptLabel', text: t.promptLabel },
+            { id: 'batchLabel', text: t.batchLabel },
+            { id: 'delayLabel', text: t.delayLabel },
+            { id: 'maxRowsLabel', text: t.maxRowsLabel },
+            { id: 'btnText', text: t.translateBtnText },
+            { id: 'downloadBtnText', text: t.downloadBtnText },
+            { id: 'newFileBtnText', text: t.newFileBtnText },
+            { id: 'cancelBtnText', text: t.cancelBtnText },
+            { id: 'note1_span', text: t.note1_span },
+            { id: 'note1_text', text: t.note1_text },
+            { id: 'note2_span', text: t.note2_span },
+            { id: 'note2_text', text: t.note2_text },
+            { id: 'note3_span', text: t.note3_span },
+            { id: 'note3_text', text: t.note3_text },
+            { id: 'note4_span', text: t.note4_span },
+            { id: 'note4_text', text: t.note4_text },
+        ];
+
+        elementsToUpdate.forEach(el => {
+            const element = document.getElementById(el.id);
+            if (element) {
+                if (el.hasSpan) {
+                    const textParts = el.text.split(' ');
+                    element.innerHTML = `<span class="text-gradient">${el.spanNumber}.</span> ${textParts.slice(1).join(' ')}`;
+                } else {
+                    element.textContent = el.text;
+                }
+            }
+        });
+
+        if(filterInput) filterInput.placeholder = t.filterPlaceholder;
+        if(promptInput) promptInput.placeholder = t.promptPlaceholder;
+        if(langToggleBtn) langToggleBtn.textContent = lang === 'ar' ? 'EN' : 'AR';
+        document.body.style.textAlign = lang === 'ar' ? 'right' : 'left';
     }
 </script>
 
 </body>
 </html>
+
