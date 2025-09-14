@@ -4,13 +4,9 @@
   <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="Advanced Medical Translator Screenshot" width="90%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3)">
 </p>
 
-<p align="center">
-  <a href="https://github.com/AbdulRhmanAbdulGhaffar/medical-translator/stargazers"><img src="https://img.shields.io/github/stars/username/medical-translator?style=for-the-badge" alt="Stars"></a>
-  <a href="https://github.com/AbdulRhmanAbdulGhaffar/medical-translator/issues"><img src="https://img.shields.io/github/issues/username/medical-translator?style=for-the-badge" alt="Issues"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/AbdulRhmanAbdulGhaffar/medical-translator?style=for-the-badge" alt="License"></a>
-  <img src="https://img.shields.io/github/last-commit/username/medical-translator?style=for-the-badge" alt="Last Commit">
-</p>
-
+[![Live Demo](https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png)](https://abdulrhmanabdulghaffar.github.io/DBM_System/)
+[![GitHub license](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Made with HTML, CSS & JS](https://img.shields.io/badge/Made%20with-HTML%2CCSS%2CJS-orange?style=for-the-badge)]()
 ---
 
 ## 🚀 Overview
