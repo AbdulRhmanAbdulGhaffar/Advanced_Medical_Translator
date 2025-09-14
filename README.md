@@ -2,7 +2,7 @@
 
 
 
-[![Live Demo](https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png)](https://abdulrhmanabdulghaffar.github.io/Advanced_Medical_Translator/)
+[![Live Demo](https://i.postimg.cc/yNQMXVSy/Screenshot-2025-09-14-064524.png)](https://abdulrhmanabdulghaffar.github.io/Advanced_Medical_Translator/)
 [![GitHub license](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Made with HTML, CSS & JS](https://img.shields.io/badge/Made%20with-HTML%2CCSS%2CJS-orange?style=for-the-badge)]()
 ---
@@ -26,8 +26,8 @@ Built with **Tailwind CSS** for a sleek UI, and powered by **Google Gemini API**
 
 ## 🖼️ Live Preview Screenshot
 <p align="center">
-  <a href="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" target="_blank">
-    <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="UI Screenshot" width="70%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3);transition:transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+  <a href="https://i.postimg.cc/yNQMXVSy/Screenshot-2025-09-14-064524.png" target="_blank">
+    <img src="https://i.postimg.cc/yNQMXVSy/Screenshot-2025-09-14-064524.png" alt="UI Screenshot" width="70%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3);transition:transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
   </a>
 </p>
 
