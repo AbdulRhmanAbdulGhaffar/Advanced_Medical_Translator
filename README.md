@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/username/medical-translator/stargazers"><img src="https://img.shields.io/github/stars/username/medical-translator?style=for-the-badge" alt="Stars"></a>
-  <a href="https://github.com/username/medical-translator/issues"><img src="https://img.shields.io/github/issues/username/medical-translator?style=for-the-badge" alt="Issues"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/username/medical-translator?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/AbdulRhmanAbdulGhaffar/medical-translator/stargazers"><img src="https://img.shields.io/github/stars/username/medical-translator?style=for-the-badge" alt="Stars"></a>
+  <a href="https://github.com/AbdulRhmanAbdulGhaffar/medical-translator/issues"><img src="https://img.shields.io/github/issues/username/medical-translator?style=for-the-badge" alt="Issues"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/AbdulRhmanAbdulGhaffar/medical-translator?style=for-the-badge" alt="License"></a>
   <img src="https://img.shields.io/github/last-commit/username/medical-translator?style=for-the-badge" alt="Last Commit">
 </p>
 
