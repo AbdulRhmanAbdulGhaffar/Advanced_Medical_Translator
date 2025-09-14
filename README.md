@@ -1,47 +1,64 @@
-# 🌐 Advanced Medical Translator
-
+<!-- Project Banner -->
 <p align="center">
-  <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="Advanced Medical Translator Screenshot" width="90%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3)">
+  <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="Project Banner" width="100%" style="border-radius: 15px;">
 </p>
 
+<h1 align="center">🚀 Integrated Smart Infrastructure Control System (ISICS)</h1>
+
 <p align="center">
-  <a href="https://github.com/username/medical-translator/stargazers"><img src="https://img.shields.io/github/stars/username/medical-translator?style=for-the-badge" alt="Stars"></a>
-  <a href="https://github.com/username/medical-translator/issues"><img src="https://img.shields.io/github/issues/username/medical-translator?style=for-the-badge" alt="Issues"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/username/medical-translator?style=for-the-badge" alt="License"></a>
-  <img src="https://img.shields.io/github/last-commit/username/medical-translator?style=for-the-badge" alt="Last Commit">
-</p>
-
----
-
-## 🚀 Overview
-**Advanced Medical Translator** is a modern, web-based tool designed to translate **medical and healthcare device data** from Excel/CSV files into Arabic with **high precision**.  
-Built with **Tailwind CSS** for a sleek UI, and powered by **Google Gemini API**, it delivers professional, context-aware translations and even extracts **model** and **size** information automatically.
-
----
-
-## ✨ Features
-- 📂 **File Upload Support** – Drag & drop or select Excel/CSV files  
-- 🧠 **AI-Powered Translation** – Powered by Google Gemini for accurate, context-aware results  
-- 🎛 **Customizable Settings** – Choose target column, add custom translation instructions, filter rows by keyword  
-- ⚡ **Batch Processing** – Control batch size for better performance  
-- 📊 **Progress Tracking** – Real-time status updates during translation  
-- 🎨 **Modern UI & Animations** – Clean design, smooth transitions, fully responsive  
-- 📥 **Instant Download** – Export results to Excel with a single click  
-
----
-
-## 🖼️ Live Preview Screenshot
-<p align="center">
-  <a href="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" target="_blank">
-    <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="UI Screenshot" width="70%" style="border-radius:15px;box-shadow:0px 4px 15px rgba(0,0,0,0.3);transition:transform 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-  </a>
+  <em>Smart, Secure, and AI-Powered Infrastructure Management</em>
 </p>
 
 ---
 
-## 🛠️ Installation & Usage
+## 📖 About The Project
 
-### 1️⃣ Clone the Repository
+ISICS is a next-generation **smart infrastructure control system** designed to integrate and monitor critical components including:
+
+- 🌐 **Network Devices** (Routers, Switches, Firewalls)
+- 🖥️ **Servers & Virtual Machines**
+- 🧠 **AI-Powered Surveillance & Threat Detection**
+- 🔐 **Cybersecurity Automation**
+- 📊 **Real-time Monitoring Dashboard**
+
+This project provides **a unified control panel** for infrastructure engineers, cybersecurity teams, and AI analysts to collaborate efficiently.
+
+---
+
+## ✨ Key Features
+
+✅ **AI-Driven Video Surveillance** – Automatically blurs unauthorized individuals  
+✅ **Centralized Network Control** – Real-time monitoring and troubleshooting  
+✅ **Cybersecurity Alerts** – Automated detection and response to incidents  
+✅ **Scalable Architecture** – Works across small and large infrastructures  
+✅ **Data Analytics & Reporting** – Visual insights for decision-making  
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer             | Technology Used |
+|------------------|----------------|
+| **Frontend**      | React + TailwindCSS |
+| **Backend**       | Node.js + Express |
+| **Database**      | MongoDB / PostgreSQL |
+| **Networking**    | Cisco Packet Tracer / GNS3 |
+| **AI & ML**       | OpenCV + TensorFlow |
+| **Security**      | SIEM Integration + Threat Intel |
+
+---
+
+## 📷 Screenshots
+
+<p align="center">
+  <img src="https://i.postimg.cc/WznXX23B/Screenshot-2025-09-14-025243.png" alt="System Screenshot" width="85%">
+</p>
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/username/medical-translator.git
-cd medical-translator
+git clone https://github.com/aboodi200/ISICS.git
+cd ISICS
